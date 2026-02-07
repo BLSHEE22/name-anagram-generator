@@ -1,1 +1,6 @@
-
+.DS_Store
+checkpoints/
+anagram_model/
+*.pt
+*.bin
+*.ckpt
