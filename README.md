@@ -1,4 +1,4 @@
 # Name Anagram Generator
 
-Create anagrams out of you and your friends' names!
+Create anagrams out of your friends' names!
 
