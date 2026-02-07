@@ -1,1 +1,3 @@
+MODEL_NAME = "t5-small"
+MAX_LENGTH = 32
 
