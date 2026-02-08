@@ -32,7 +32,7 @@ for name in names:
         print(RED + "\n##############################################################################\n" +
                f"\nFinding anagrams for {name} with starting word closest to length {n}...\n" + 
                "\n##############################################################################\n" + RESET)
-        top_anagrams = generate_top_anagrams(name, model, tokenizer, top_n=10, rewrite=False, beam=1, limit=200, 
+        top_anagrams = generate_top_anagrams(name, model, tokenizer, top_n=10, rewrite=False, beam=6, limit=200, 
                                              baseline_words=10, first_word_length=n)
         
         # filter out already seen anagrams
@@ -57,14 +57,14 @@ for name in names:
                 deciding = True
                 while deciding:
                     sys.stdout.write(f"{i+1}. \033[1m{a}\033[0m  👍? (↑/↓/→/←): ")
-                    sorted_a = sorted([b.lower() for b in a if b != ' '])
-                    sorted_name = sorted([c.lower() for c in name if c != ' '])
-                    valid_check = sorted_a == sorted_name
-                    print(f"Sorted anagram: {sorted_a}")
-                    print(f"Sorted name: {sorted_name}")
-                    print(f"Valid: {valid_check}")
-                    if not valid_check:
-                        raise Exception
+                    #sorted_a = sorted([b.lower() for b in a if b != ' '])
+                    #sorted_name = sorted([c.lower() for c in name if c != ' '])
+                    #valid_check = sorted_a == sorted_name
+                    #print(f"Sorted anagram: {sorted_a}")
+                    #print(f"Sorted name: {sorted_name}")
+                    #print(f"Valid: {valid_check}")
+                    #if not valid_check:
+                        #raise Exception
                     sys.stdout.flush()
 
                     k = readkey()
