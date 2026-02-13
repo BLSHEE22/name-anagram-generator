@@ -18,7 +18,7 @@ RESET = '\033[0m'
 # ==============
 BEAM_SIZE = 6
 SEARCH_TIME_LIMIT = 5
-RESULT_GROUP_MIN = 10
+RESULT_GROUP_MIN = 8
 
 # ======================================================
 # --- Helper function to ensure anagrams are correct ---
