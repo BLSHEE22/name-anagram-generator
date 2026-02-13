@@ -4442,6 +4442,8 @@ amercers
 amerces
 amerciable
 amercing
+american
+americans
 americium
 americiums
 amesace
@@ -35564,8 +35566,6 @@ cutworm
 cutworms
 cuvette
 cuvettes
-cwm
-cwms
 cyan
 cyanamid
 cyanamide
@@ -78164,6 +78164,7 @@ iring
 iris
 irised
 irises
+irish
 irising
 iritic
 iritis

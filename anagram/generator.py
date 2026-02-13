@@ -1,9 +1,17 @@
 from collections import Counter, deque
 import re
+import sys
+import time
 import torch
 import random
+from readchar import readkey
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
+RED = '\033[31m'
+GREEN = '\033[32m'
+YELLOW = '\033[33m'
+BOLD = '\033[1m'
+RESET = '\033[0m'
 
 # ===========================
 # --- Word lists / scoring ---
@@ -11,7 +19,7 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 # Example lists — you can fill these with your full word lists
 VERY_FIT_WORDS = set(["sex", "ass", "anal", "ew", "nerd", "ham", "oil", "hog", "jail"])
-FIT_WORDS = set(["hello", "ally", "relay", "jock", "man", "ban", "van", "elk", "new"])
+FIT_WORDS = set(["hello", "ally", "relay", "jock", "man", "ban", "van", "elk", "new", "hey"])
 HELPER_WORDS = set(["oh", "aim", "love", "run", "the", "and", "cat", "dog", "mr", "ms", "mrs", "dr"])
 
 # Only accept common two-letter words
@@ -45,6 +53,8 @@ def length_score(word, name_length, first_word_length):
     """
     # The closer the length to desired, the higher the score
     return -abs(len(word) - first_word_length)
+    rand_reward = random.randrange(1, 20) * len(word)
+    return rand_reward
 
 def letter_hog_penalty(word, remaining_counter):
     total_letters = sum(remaining_counter.values())
@@ -85,6 +95,14 @@ def is_word_allowed(word, previous_words):
                 return False
         else:
             return False
+    elif word == "an":
+        if previous_words:
+            previous_words_lower = [p.lower() for p in previous_words]
+            # accept 'an' if not already existing AND vowel-starting word already exists
+            if word not in previous_words_lower and any(w[0] in ["a", "e", "i", "o", "u"] for w in previous_words_lower):
+                return True
+            else:
+                return False
     return True
 
 def load_words(path="anagram/enable1.txt", max_len=None):
@@ -120,11 +138,23 @@ def filter_valid_words(name, words, remaining_counter, first_word_length):
 
     return valid
 
+# =========================================
+# --- Break function for runaway search ---
+# =========================================
+
+def exceeded_time_limit(start, limit=60, debug=False):
+    curr_time = time.perf_counter()
+    elapsed = curr_time - start
+    if debug:
+        print(f"Elapsed seconds: {elapsed}")
+        print(f"Limit: {limit}")
+    return elapsed > limit
+
 # ===========================
 # --- Guided anagram generation ---
 # ===========================
 
-def generate_anagrams_guided(name, words=None, max_words=6, limit=200, beam=10, first_word_length=20):
+def generate_anagrams_guided(name, start_time, words=None, max_words=6, limit=200, beam=10, time_limit=60, first_word_length=20):
     name_counter = letter_count(name)
     if words is None:
         words = load_words(max_len=len(normalize(name)))
@@ -134,10 +164,20 @@ def generate_anagrams_guided(name, words=None, max_words=6, limit=200, beam=10, 
     stack.append( ([], name_counter) )
 
     while stack and len(results) < limit:
+
+        # TODO
+        # if 's' pressed, stop the search
+        #global stop_requested
+        # if stop_requested:
+        #     print("Stopped search at user request.")
+        #     break
+
         current_phrase, remaining = stack.pop()
 
         if not any(remaining.values()):
-            results.append(" ".join(current_phrase))
+            candidate = " ".join(current_phrase)
+            #print(GREEN + f"\nACCEPTED: {current_phrase}\n" + RESET)
+            results.append(candidate)
             continue
 
         if len(current_phrase) >= max_words:
@@ -148,6 +188,7 @@ def generate_anagrams_guided(name, words=None, max_words=6, limit=200, beam=10, 
         top_valid_words = valid_words[:M]
         valid_words_shuffled = random.sample(top_valid_words, min(beam, len(top_valid_words)))
         for w in valid_words_shuffled:
+            #print(f"{w} : {current_phrase}")
             if not is_word_allowed(w, current_phrase):
                 continue  # skip invalid single-letter word
             next_remaining = remaining.copy()
@@ -155,6 +196,11 @@ def generate_anagrams_guided(name, words=None, max_words=6, limit=200, beam=10, 
             next_remaining = +next_remaining  # remove zeros/negatives
             # Always append — don't discard sequences too early
             stack.append((current_phrase + [w], next_remaining))
+        
+        # stop searches that take longer than the time limit
+        if exceeded_time_limit(start_time, time_limit):
+            stop_requested = True
+            break
 
     return results
 
@@ -185,31 +231,19 @@ def score_anagrams_batch(input_text, phrases, model, tokenizer, batch_size=16):
     return scores
 
 # ===========================
-# --- Optional T5 rewrite ---
-# ===========================
-
-def rewrite_anagram(phrase, model, tokenizer):
-    prompt = f"Rewrite this anagram to be witty and natural:\n{phrase}"
-    inputs = tokenizer(prompt, return_tensors="pt")
-    outputs = model.generate(
-        **inputs,
-        max_length=50,
-        do_sample=True,
-        temperature=0.7,
-        top_k=20,
-        top_p=0.9,
-    )
-    return tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
-
-# ===========================
 # --- Full optimized pipeline ---
 # ===========================
 
-def generate_top_anagrams(name, model, tokenizer, top_n=3, max_words=6,
-                          rewrite=True, beam=10, limit=200, baseline_words=3, first_word_length=20):
+def generate_top_anagrams(name, model, tokenizer, time_limit=60, top_n=3, max_words=6, beam=10, limit=200, baseline_words=3, first_word_length=20):
     words = load_words(max_len=len(normalize(name)))
-    candidates = generate_anagrams_guided(name, words=words, max_words=max_words,
-                                          limit=limit, beam=beam, first_word_length=first_word_length)
+
+    # start time limit for search
+    start = time.perf_counter()
+
+    # run anagram finder
+    candidates = generate_anagrams_guided(name, start_time=start, words=words, max_words=max_words,
+                                          limit=limit, beam=beam, time_limit=time_limit, first_word_length=first_word_length)
+
     if not candidates:
         return ["[No valid anagrams found]"]
 
@@ -233,9 +267,5 @@ def generate_top_anagrams(name, model, tokenizer, top_n=3, max_words=6,
 
     final_scores.sort(key=lambda x: x[1], reverse=True)
     top_phrases = [p for p, _ in final_scores[:top_n]]
-
-    # Optional rewrite
-    if rewrite:
-        top_phrases = [rewrite_anagram(p, model, tokenizer) for p in top_phrases]
 
     return top_phrases
