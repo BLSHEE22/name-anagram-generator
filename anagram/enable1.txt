@@ -2956,6 +2956,7 @@ aha
 ahchoo
 ahead
 ahem
+ahh
 ahimsa
 ahimsas
 ahistoric
@@ -3251,6 +3252,7 @@ alarums
 alary
 alas
 alaska
+alaskan
 alaskas
 alastor
 alastors
@@ -24412,8 +24414,6 @@ chicories
 chicory
 chicos
 chics
-chid
-chidden
 chide
 chided
 chider
@@ -36649,6 +36649,7 @@ dazzles
 dazzling
 dazzlingly
 de
+dea
 deacidification
 deacidifications
 deacidified
@@ -66156,6 +66157,7 @@ hamza
 hamzah
 hamzahs
 hamzas
+han
 hanaper
 hanapers
 hance
@@ -69464,7 +69466,9 @@ homicidal
 homicidally
 homicide
 homicides
+homie
 homier
+homies
 homiest
 homiletic
 homiletical
@@ -71840,6 +71844,7 @@ hysteroid
 hysterotomies
 hysterotomy
 hyte
+i
 iamb
 iambi
 iambic
@@ -73683,6 +73688,7 @@ inburst
 inbursts
 inby
 inbye
+inc
 incage
 incaged
 incages
@@ -80502,6 +80508,7 @@ kazoo
 kazoos
 kbar
 kbars
+kc
 kea
 keas
 kebab
@@ -81466,6 +81473,7 @@ knelt
 knesset
 knessets
 knew
+knick
 knickerbocker
 knickerbockers
 knickers
@@ -95292,6 +95300,7 @@ mridangams
 mridangas
 mrs
 ms
+mt
 mu
 much
 muchacho
@@ -98050,6 +98059,7 @@ nexuses
 ngultrum
 ngultrums
 ngwee
+nhl
 niacin
 niacinamide
 niacinamides
@@ -132364,6 +132374,7 @@ ruttishly
 ruttishness
 ruttishnesses
 rutty
+rv
 rya
 ryas
 rye
@@ -167599,6 +167610,7 @@ volcanologist
 volcanologists
 volcanology
 volcanos
+voldemort
 vole
 voled
 voleries

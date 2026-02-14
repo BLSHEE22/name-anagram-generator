@@ -16,9 +16,9 @@ RESET = '\033[0m'
 # ==============
 # --- Config ---
 # ==============
-BEAM_SIZE = 6
-SEARCH_TIME_LIMIT = 5
-RESULT_GROUP_MIN = 8
+BEAM_SIZE = 10
+SEARCH_TIME_LIMIT = 20
+RESULT_GROUP_MIN = 5
 
 # ======================================================
 # --- Helper function to ensure anagrams are correct ---
@@ -42,23 +42,39 @@ model_path = "./anagram_model"
 model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 
+# test anagrams
+names_to_test = [("Milin Joshi", "Jim His Loin")]
+for name_pair in names_to_test:
+    name = name_pair[0]
+    anagram = name_pair[1]
+    validate(name, anagram)
+
 # run
 print(YELLOW + "\nWelcome to the Name Anagram Generator!\n" + RESET)
 full_name = input("Enter a name below.\n")
 names = []
 names.append(full_name)
 print()
+
+# support working multiple names sequentially
 for name in names:
+
+    # set up search strategy
+    name_length = len(name)
+    search_strategies = [1, 0.75, 0.66, 0.5, 0.33, 0.25]
+    first_word_lengths = (round(s, 2)*name_length for s in search_strategies)
+
+    # anagram storage
     all_anagrams = []
     top_anagrams_dict = dict()
     best_anagrams = []
   
-    # find all anagrams by starting word length descending
-    for n in range(len(name), 3, -1):
+    # find anagrams using initial word lengths of various sizes (name_length, 0.75*name_length, etc.)
+    for n in first_word_lengths:
         # stop search if the minimum desired result groups exist
         if len(top_anagrams_dict.keys()) >= RESULT_GROUP_MIN:
             break
-        sys.stdout.write(f"\rSearching for anagrams... ")
+        sys.stdout.write(f"\rSearching for anagrams with starting word closest to {n/name_length*100:5.1f}% of name length... ")
         sys.stdout.flush()
         start = time.perf_counter()
         top_anagrams = generate_top_anagrams(name, model, tokenizer, time_limit=SEARCH_TIME_LIMIT, top_n=10, beam=BEAM_SIZE, limit=200, 
@@ -71,10 +87,10 @@ for name in names:
         top_anagrams = [a.title() for a in top_anagrams if frozenset(a.split()) not in all_anagrams]
         #print(f"Top anagrams that have not yet been seen: {top_anagrams}")
 
+        # skip failed searches
         if all("[" not in a for a in top_anagrams):
             if top_anagrams:
                 top_angrams_condensed = top_anagrams.copy()
-                #top_anagrams_condensed = [' '.join(sorted(b.split(), key=len, reverse=True)) for b in set([' '.join(a.split()) for a in top_anagrams])]
                 top_anagrams_condensed = [' '.join(c).title() for c in {frozenset(b.split()) for b in (a.lower() for a in top_anagrams)}]
                 #print(f"Top anagrams condensed: {top_anagrams_condensed}")
                 while len(top_anagrams_condensed) > len(unique_phrases_this_round):
@@ -82,18 +98,6 @@ for name in names:
                     print(f"\nTop anagrams condensed: {top_anagrams_condensed}, length {len(top_anagrams_condensed)}.")
                     print(f"Unique phrases this round: {unique_phrases_this_round}, length {len(unique_phrases_this_round)}.")
                     top_anagrams_condensed = [' '.join(c).title() for c in {frozenset(b.split()) for b in (a.lower() for a in top_anagrams)}]
-
-                    # lower_a = [a.lower() for a in top_anagrams_condensed]
-                    # print(f"\nAll lowercase: {lower_a}")
-                    # broken_a = [a.split() for a in lower_a]
-                    # print(f"Broken up anagrams: {broken_a}")
-                    # no_dup_a = set(frozenset(a) for a in broken_a)
-                    # print(f"Removed duplicate words and ensuing anagrams: {no_dup_a}")
-                    # rejoined_a = [' '.join(a).title() for a in no_dup_a]
-                    # print(f"Rejoined/retitled anagrams: {rejoined_a}\n")
-                    # top_anagrams_condensed = rejoined_a
-                    ###
-                    #top_anagrams_condensed = [' '.join(sorted(b.split(), key=len, reverse=True)) for b in set([' '.join(a.split()) for a in top_anagrams_condensed])]
                 sys.stdout.write(f"{len(top_anagrams_condensed):2d} found, ")
                 sys.stdout.flush()
             else:
@@ -114,11 +118,11 @@ for name in names:
         sys.stdout.write(f"took {elapsed:5.2f} seconds.\n")
         sys.stdout.flush()
         sys.stdout.write("\r\033[K")
-        #sys.stdout.flush()
 
     # user quality check
     i = 1
     initial_word_lengths = sorted(top_anagrams_dict.keys(), reverse=True)
+    print(f"{len(top_anagrams_dict.values())} total!\n")
     for n in initial_word_lengths:
         if top_anagrams_dict[n]:
             # don't move the cursor back for the first set
@@ -127,9 +131,8 @@ for name in names:
                 lines_back = 1
                 print()
             print(RED + f"\r\033[{lines_back}A\n##############################################################################\n" +
-                f"\n Anagrams for {name} with initial word length closest to {n}...\n" + 
+                f"\n Anagrams for {name} with initial word length closest to {round(n, 2)}...\n" + 
                 "\n##############################################################################\n" + RESET)
-            #print(f"{len(top_anagrams_dict[n])} found!\n")
             for a in top_anagrams_dict[n]:
                 deciding = True
                 while deciding:
@@ -185,7 +188,7 @@ for name in names:
                     i += 1
 
 
-    # re-run of model to rank user selected anagrams
+    # re-run model to rank user selected anagrams
     if best_anagrams:
         print(f"\nHere's how the computer ranks the best anagrams you selected for: {name}\n")
         scored_final_anagrams = sorted(score_anagrams_batch(name, best_anagrams, model, tokenizer, batch_size=max(len(best_anagrams), 5)), key=lambda x: x[1], reverse=True)

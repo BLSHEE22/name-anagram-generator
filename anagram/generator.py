@@ -19,14 +19,17 @@ RESET = '\033[0m'
 
 # Example lists — you can fill these with your full word lists
 VERY_FIT_WORDS = set(["sex", "ass", "anal", "ew", "nerd", "ham", "oil", "hog", "jail"])
-FIT_WORDS = set(["hello", "ally", "relay", "jock", "man", "ban", "van", "elk", "new", "hey"])
-HELPER_WORDS = set(["oh", "aim", "love", "run", "the", "and", "cat", "dog", "mr", "ms", "mrs", "dr"])
+FIT_WORDS = set(["hello", "ally", "relay", "jock", "like", "man", "ban", "hick", "van", "elk", "new", "hey", "black"])
+HELPER_WORDS = set(["oh", "aim", "love", "run", "the", "and", "cat", "dog", "mr", "ms", "mrs", "dr",
+                    "nhl", "ny", "nj", "aa", "ma", "nh"])
 
 # Only accept common two-letter words
 VALID_TWO_LETTER_WORDS = {
     "of", "to", "in", "on", "at", "by", "up", "if", "is", "it",
     "as", "or", "we", "he", "me", "my", "us", "do", "go", "no",
-    "so", "am", "ew", "mr", "ms", "dr", "oh", "an"
+    "so", "am", "ew", "mr", "ms", "dr", "oh", "an", "aa", "ny",
+    "nj", "ma", "nh", "mt", "kc", "cc", "nz", "va", "rv", "sa",
+    "la", "vr", "tv"
 }
 
 def phrase_bonus_score(phrase, baseline_words=10):
@@ -35,26 +38,24 @@ def phrase_bonus_score(phrase, baseline_words=10):
     words_in_phrase = phrase.split()
     for w in words_in_phrase:
         if w in VERY_FIT_WORDS:
-            score += 0
+            score += 3
         elif w in FIT_WORDS:
-            score += 0
+            score += 2
         elif w in HELPER_WORDS:
-            score += 0
+            score += 1
     return score
 
 def phrase_length_multiplier(phrase, baseline_words=3):
     """Favor fewer words: multiplicative boost"""
     num_words = len(phrase.split())
-    return 1.0 + 0.1 * max(0, baseline_words - num_words)
+    return 1.0 + 2 * max(0, baseline_words - num_words)
 
 def length_score(word, name_length, first_word_length):
     """
-    Favor words of length [first_word_length]
+    Favor words closest to length [first_word_length].
     """
-    # The closer the length to desired, the higher the score
+    #return random.randrange(1, 20)
     return -abs(len(word) - first_word_length)
-    rand_reward = random.randrange(1, 20) * len(word)
-    return rand_reward
 
 def letter_hog_penalty(word, remaining_counter):
     total_letters = sum(remaining_counter.values())
@@ -83,26 +84,37 @@ def is_word_allowed(word, previous_words):
         #print(f"Leftover letter: {word}")
         #print(f"Remaining words: {previous_words}")
         if previous_words:
-            previous_words_lower = [p.lower() for p in previous_words]
             # accept 'a' if not already existing AND consonant-starting word already exists
-            if word == 'a' and 'a' not in previous_words_lower and not all(w[0] in ["a", "e", "i", "o", "u"] for w in previous_words_lower):
+            if word == 'a' and 'a' not in previous_words and not all(w[0] in ["a", "e", "i", "o", "u"] for w in previous_words):
+                #print(f"Accepted 'a' because consonant-starting word exists in {previous_words}.")
                 return True
             # accept one letter word if honorific exists unless word already exists
-            elif any(w in previous_words_lower for w in ["mr", "ms", "mrs", "dr"]) and (word not in previous_words_lower):
+            elif any(w in previous_words for w in ["mr", "ms", "mrs", "dr"]) and (word not in previous_words):
+                #print(f"Accepted '{word}' because honorific exists in {previous_words}.")
                 return True    
+            elif word == 'i' and 'am' in previous_words:
+                #print(f"Accepted 'i' because 'am' exists in {previous_words}.")
+                return True
             # otherwise don't accept
             else:
+                #print(f"Rejected one-letter word '{word}' because no honorific exists in {previous_words}.")
                 return False
         else:
+            #print(f"Rejected one-letter word '{word}' because no words exist in {previous_words}.")
             return False
     elif word == "an":
         if previous_words:
-            previous_words_lower = [p.lower() for p in previous_words]
             # accept 'an' if not already existing AND vowel-starting word already exists
-            if word not in previous_words_lower and any(w[0] in ["a", "e", "i", "o", "u"] for w in previous_words_lower):
+            if word not in previous_words and any(w[0] in ["a", "e", "i", "o", "u"] for w in previous_words):
+                #print(f"Accepted 'an' because vowel-starting word exists in {previous_words}.")
                 return True
             else:
+                #print(f"Rejected 'an' because no vowel-starting word exists in {previous_words}.")
                 return False
+    elif word in previous_words:
+        # don't accept a repeat word
+        #print(f"Rejected repeat word '{word}' which was already in {previous_words}.")
+        return False
     return True
 
 def load_words(path="anagram/enable1.txt", max_len=None):
@@ -132,9 +144,13 @@ def filter_valid_words(name, words, remaining_counter, first_word_length):
     # prevents alphabetical bias
     random.shuffle(valid)
 
-    # sort by word length, accounting for 'too large' words
+    # reward word length
     valid.sort(key=lambda w: length_score(w, len(name), first_word_length) +
-                              random.uniform(0, 0.01), reverse=True)
+                             #phrase_bonus_score(w + " dummy") +
+                             random.uniform(0, 0.01), reverse=True)
+
+    # if valid:
+    #     print(valid[:10])
 
     return valid
 
@@ -188,9 +204,12 @@ def generate_anagrams_guided(name, start_time, words=None, max_words=6, limit=20
         top_valid_words = valid_words[:M]
         valid_words_shuffled = random.sample(top_valid_words, min(beam, len(top_valid_words)))
         for w in valid_words_shuffled:
+            #print("### working ###")
             #print(f"{w} : {current_phrase}")
+            #print(remaining)
+            #print("###############")
             if not is_word_allowed(w, current_phrase):
-                continue  # skip invalid single-letter word
+                continue 
             next_remaining = remaining.copy()
             next_remaining.subtract(Counter(w))
             next_remaining = +next_remaining  # remove zeros/negatives
