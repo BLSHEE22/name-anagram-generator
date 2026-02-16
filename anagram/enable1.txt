@@ -1635,6 +1635,7 @@ adductive
 adductor
 adductors
 adducts
+ade
 adeem
 adeemed
 adeeming
@@ -3657,6 +3658,7 @@ alkyls
 alkyne
 alkynes
 all
+allah
 allanite
 allanites
 allantoic
@@ -10958,6 +10960,7 @@ bagworms
 bah
 bahadur
 bahadurs
+bahamian
 baht
 bahts
 baidarka
@@ -11833,6 +11836,7 @@ barterer
 barterers
 bartering
 barters
+bartery
 bartisan
 bartisans
 bartizan
@@ -12260,6 +12264,7 @@ bazooka
 bazookas
 bazooms
 bazoos
+bbl
 bdellium
 bdelliums
 be
@@ -15148,6 +15153,7 @@ bizonal
 bizone
 bizones
 bizzes
+bj
 blab
 blabbed
 blabber
@@ -17330,6 +17336,7 @@ boysenberries
 boysenberry
 bozo
 bozos
+bpa
 bra
 brabble
 brabbled
@@ -17743,6 +17750,7 @@ breakage
 breakages
 breakaway
 breakaways
+breakdancer
 breakdown
 breakdowns
 breaker
@@ -18250,6 +18258,7 @@ brollies
 brolly
 bromal
 bromals
+bromance
 bromate
 bromated
 bromates
@@ -19802,6 +19811,7 @@ cabinetworks
 cabining
 cabins
 cable
+cablecar
 cabled
 cablegram
 cablegrams
@@ -20868,6 +20878,7 @@ canoed
 canoeing
 canoeist
 canoeists
+canoer
 canoes
 canola
 canon
@@ -25493,6 +25504,7 @@ chymotrypsinogens
 chymotrypsins
 chymotryptic
 chymous
+cia
 ciao
 cibol
 cibols
@@ -25535,6 +25547,8 @@ cicoree
 cicorees
 cider
 ciders
+cig
+cigs
 cigar
 cigaret
 cigarets
@@ -26627,6 +26641,7 @@ clockers
 clocking
 clocklike
 clocks
+clocksmen
 clockwise
 clockwork
 clockworks
@@ -30261,6 +30276,7 @@ conkers
 conking
 conks
 conky
+conman
 conn
 connate
 connately
@@ -45579,6 +45595,7 @@ dugs
 dui
 duiker
 duikers
+duis
 duit
 duits
 duke
@@ -45926,6 +45943,7 @@ duvetyne
 duvetynes
 duvetyns
 duxelles
+dvd
 dwarf
 dwarfed
 dwarfer
@@ -46192,6 +46210,8 @@ earplug
 earplugs
 earring
 earrings
+ea
+ear
 ears
 earshot
 earshots
@@ -46740,6 +46760,7 @@ eels
 eelworm
 eelworms
 eely
+eensy
 eerie
 eerier
 eeriest
@@ -55275,6 +55296,7 @@ figurines
 figuring
 figwort
 figworts
+fiji
 fil
 fila
 filagree
@@ -61744,6 +61766,7 @@ gewgaw
 gewgaws
 gewurztraminer
 gewurztraminers
+gex
 gey
 geyser
 geyserite
@@ -62142,6 +62165,7 @@ girth
 girthed
 girthing
 girths
+girthy
 girting
 girts
 gisarme
@@ -65874,6 +65898,7 @@ hajj
 hajjes
 hajji
 hajjis
+haka
 hake
 hakeem
 hakeems
@@ -66038,6 +66063,7 @@ haloids
 haloing
 halolike
 halomorphic
+halon
 haloperidol
 haloperidols
 halophile
@@ -67077,6 +67103,7 @@ hazy
 hazzan
 hazzanim
 hazzans
+hc
 he
 head
 headache
@@ -68676,6 +68703,8 @@ highway
 highwayman
 highwaymen
 highways
+hijab
+hijabs
 hijack
 hijacked
 hijacker
@@ -69123,6 +69152,7 @@ hoelike
 hoer
 hoers
 hoes
+hof
 hog
 hogan
 hogans
@@ -78825,6 +78855,7 @@ izar
 izars
 izzard
 izzards
+j
 jab
 jabbed
 jabber
@@ -78984,6 +79015,7 @@ jaguarondis
 jaguars
 jaguarundi
 jaguarundis
+jah
 jail
 jailbait
 jailbird
@@ -79741,6 +79773,7 @@ joltily
 jolting
 jolts
 jolty
+jonas
 jones
 joneses
 jongleur
@@ -79880,6 +79913,7 @@ joyrode
 joys
 joystick
 joysticks
+jr
 juba
 jubas
 jubbah
@@ -81680,6 +81714,7 @@ komondor
 komondorock
 komondorok
 komondors
+kong
 konk
 konked
 konking
@@ -87848,6 +87883,7 @@ malvasia
 malvasias
 malversation
 malversations
+mam
 mama
 mamaliga
 mamaligas
@@ -89046,6 +89082,7 @@ mathematize
 mathematized
 mathematizes
 mathematizing
+mathletes
 maths
 matilda
 matildas
@@ -89605,6 +89642,7 @@ medlar
 medlars
 medley
 medleys
+meds
 medulla
 medullae
 medullar
@@ -96745,6 +96783,7 @@ nankeen
 nankeens
 nankin
 nankins
+nanna
 nannie
 nannies
 nannoplankton
@@ -96902,6 +96941,7 @@ narwhale
 narwhales
 narwhals
 nary
+nas
 nasal
 nasalise
 nasalised
@@ -97136,6 +97176,7 @@ nazifies
 nazify
 nazifying
 nazis
+nc
 ne
 neap
 neaps
@@ -97466,6 +97507,7 @@ nemeses
 nemesis
 nemophila
 nemophilas
+nen
 nene
 neoclassic
 neoclassical
@@ -98059,6 +98101,7 @@ nexuses
 ngultrum
 ngultrums
 ngwee
+nh
 nhl
 niacin
 niacinamide
@@ -98484,6 +98527,7 @@ nizam
 nizamate
 nizamates
 nizams
+nj
 no
 nob
 nobbier
@@ -100960,6 +101004,7 @@ nuzzler
 nuzzlers
 nuzzles
 nuzzling
+ny
 nyala
 nyalas
 nyctalopia
@@ -102865,6 +102910,7 @@ orcinols
 orcins
 orcs
 ordain
+ordainable
 ordained
 ordainer
 ordainers
@@ -102921,6 +102967,8 @@ oregano
 oreganos
 oreide
 oreides
+oreo
+oreos
 ores
 orfray
 orfrays
@@ -106812,6 +106860,7 @@ oysterings
 oysterman
 oystermen
 oysters
+ozai
 ozocerite
 ozocerites
 ozokerite
@@ -107157,6 +107206,7 @@ paisleys
 pajama
 pajamaed
 pajamas
+pak
 pakeha
 pakehas
 pal
@@ -107402,6 +107452,7 @@ palmitates
 palmitin
 palmitins
 palmlike
+palmreading
 palms
 palmy
 palmyra
@@ -123485,6 +123536,7 @@ razzes
 razzing
 razzmatazz
 razzmatazzes
+rc
 re
 reabsorb
 reabsorbed
@@ -130162,6 +130214,7 @@ rex
 rexes
 reynard
 reynards
+rezip
 rezone
 rezoned
 rezones
@@ -130456,6 +130509,7 @@ ribosomes
 ribs
 ribwort
 ribworts
+ric
 rice
 ricebird
 ricebirds
@@ -132391,6 +132445,9 @@ ryokan
 ryokans
 ryot
 ryots
+ryu
+sa
+saab
 sab
 sabadilla
 sabadillas
@@ -133638,6 +133695,7 @@ sassy
 sastruga
 sastrugi
 sat
+satan
 satang
 satangs
 satanic
@@ -138515,6 +138573,7 @@ shredder
 shredders
 shredding
 shreds
+shrek
 shrew
 shrewd
 shrewder
@@ -151379,6 +151438,7 @@ syzygal
 syzygial
 syzygies
 syzygy
+t
 ta
 tab
 tabanid
@@ -151763,6 +151823,7 @@ talcous
 talcs
 talcum
 talcums
+talcy
 tale
 talebearer
 talebearers
@@ -159708,6 +159769,7 @@ tuyer
 tuyere
 tuyeres
 tuyers
+tv
 twa
 twaddle
 twaddled
@@ -159749,6 +159811,7 @@ twayblade
 twayblades
 tweak
 tweaked
+tweaker
 tweakier
 tweakiest
 tweaking
@@ -160126,6 +160189,7 @@ tzitzis
 tzitzit
 tzitzith
 tzuris
+u
 ubieties
 ubiety
 ubique
@@ -161139,6 +161203,7 @@ unclench
 unclenched
 unclenches
 unclenching
+unclerklike
 uncles
 uncliched
 unclimbable
@@ -162728,6 +162793,7 @@ uniquer
 uniques
 uniquest
 unironed
+unironic
 unironically
 unirradiated
 unirrigated
@@ -169079,6 +169145,7 @@ weaverbirds
 weavers
 weaves
 weaving
+weavy
 weazand
 weazands
 web
@@ -169093,6 +169160,7 @@ webers
 webfed
 webfeet
 webfoot
+webinar
 webless
 weblike
 webs
@@ -170139,6 +170207,7 @@ wifeliness
 wifelinesses
 wifely
 wifes
+wifi
 wifing
 wiftier
 wiftiest
@@ -170180,6 +170249,8 @@ wigwagging
 wigwags
 wigwam
 wigwams
+wii
+wiki
 wikiup
 wikiups
 wilco
@@ -170847,6 +170918,7 @@ woful
 wofully
 wog
 wogs
+woj
 wok
 woke
 woken
@@ -171717,6 +171789,7 @@ xiphisternum
 xiphoid
 xiphoids
 xis
+xl
 xu
 xylan
 xylans
@@ -172192,6 +172265,7 @@ yolkier
 yolkiest
 yolks
 yolky
+yolo
 yom
 yomim
 yon
@@ -172309,6 +172383,8 @@ yurt
 yurta
 yurts
 ywis
+za
+zack
 zabaglione
 zabagliones
 zabaione
@@ -172397,6 +172473,7 @@ zax
 zaxes
 zayin
 zayins
+zaza
 zazen
 zazens
 zeal
@@ -172466,6 +172543,7 @@ zeniths
 zeolite
 zeolites
 zeolitic
+zen
 zephyr
 zephyrs
 zeppelin
@@ -172580,6 +172658,7 @@ zinnias
 zins
 zip
 zipless
+ziplock
 zipped
 zipper
 zippered

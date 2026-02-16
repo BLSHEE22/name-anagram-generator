@@ -1,1 +1,16 @@
+TRAIN:
+
+python3 -m training.train
+
+
+TEST MODEL:
+
+python3 test_model.py
+
+
+RUN:
+
+python3 test_anagram.py
+
+
 

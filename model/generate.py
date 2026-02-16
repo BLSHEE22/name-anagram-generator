@@ -1,7 +1,7 @@
 import torch
 
 def generate_anagram(model, tokenizer, name):
-    input_text = f"anagram name: {name}"
+    input_text = name
     inputs = tokenizer(input_text, return_tensors="pt")
 
     with torch.no_grad():
