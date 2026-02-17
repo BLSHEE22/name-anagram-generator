@@ -16,6 +16,8 @@ BEAM_SIZE = 102
 SEARCH_TIME_LIMIT = 11000
 RESULT_GROUP_MIN = 10
 HUMAN_IN_THE_LOOP = False
+ASK_USER_FOR_FAVORITE = False
+JUST_MEASURING_SEARCH_DURATION = False
 
 # ===================
 # --- Font Colors ---
@@ -29,32 +31,36 @@ RESET = '\033[0m'
 # ======================================================
 # --- Helper function to ensure anagrams are correct ---
 # ======================================================
-def validate(name, anagram, debug=False):
+def validate(name, anagram, debug=False, analytics=False, test_dicts=False):
     sorted_a = sorted([b.lower() for b in anagram if b.isalpha()])
     sorted_name = sorted([c.lower() for c in name if c.isalpha()])
 
     ### DATA ANALYTICS
-    #a_normal = "".join([a.lower() if a.isalpha() else ' ' for a in anagram])
-    #print(a_normal)
-    #a_split = [a for a in a_normal.split() if a.isalpha()]
-    #print(a_split)
-    #print(f"Name: {name}")
-    #print(f"Anagram: {anagram}")
-    #longest_anagram_word = max([len(a) for a in a_split])
-    #print(f"Longest word in anagram: {longest_anagram_word}")
-    #print(longest_anagram_word)
-    # quick search to find out how many searches need to be made
-    #valid_word_dict = filter_valid_words(name, words, Counter(normalize(name)), len(name))
-    #word_ct_dict = {key: len(value) for key, value in valid_word_dict.items()}
-    #print(word_ct_dict[longest_anagram_word])
-    # scrabble = {
-    #         'a':1, 'b':3, 'c':3, 'd':2, 'e':1, 'f':4, 'g':2,
-    #         'h':4, 'i':1, 'j':8, 'k':5, 'l':1, 'm':3, 'n':1, 'o':1, 'p':3,
-    #         'q':10, 'r':1, 's':1, 't':1, 'u':1, 'v':4,
-    #         'w':4, 'x':8, 'y':4, 'z':10
-    #         }
-    #print(sum([scrabble[c] for c in a_normal.replace(" ", "")]))
+    if analytics:
+        a_normal = "".join([a.lower() if a.isalpha() else ' ' for a in anagram])
+        #print(a_normal)
+        a_split = [a for a in a_normal.split() if a.isalpha()]
+        #print(a_split)
+        #print(f"Name: {name}")
+        #print(f"Anagram: {anagram}")
+        longest_anagram_word_length = max([len(a) for a in a_split])
+        longest_ag_word_lengths[name] = longest_anagram_word_length
+        #print(f"Longest word length in anagram: {longest_anagram_word_length}")
+        #print(longest_anagram_word_length)
+        # quick search to find out how many searches need to be made
+        valid_word_dict = filter_valid_words(name, words, Counter(normalize(name)), len(name))
+        word_ct_dict = {key: len(value) for key, value in valid_word_dict.items()}
+        print(sum(word_ct_dict.values()))
+        #print(word_ct_dict[longest_anagram_word_length])
+        # scrabble = {
+        #         'a':1, 'b':3, 'c':3, 'd':2, 'e':1, 'f':4, 'g':2,
+        #         'h':4, 'i':1, 'j':8, 'k':5, 'l':1, 'm':3, 'n':1, 'o':1, 'p':3,
+        #         'q':10, 'r':1, 's':1, 't':1, 'u':1, 'v':4,
+        #         'w':4, 'x':8, 'y':4, 'z':10
+        #         }
+        #print(sum([scrabble[c] for c in a_normal.replace(" ", "")]))
 
+    # check if anagram is legal
     valid_check = sorted_a == sorted_name
     if debug:
         print(f"Sorted anagram: {sorted_a}")
@@ -65,19 +71,22 @@ def validate(name, anagram, debug=False):
         print(f"Name letters: {sorted_name}")
         print(f"Anagram letters: {sorted_a}")
         raise Exception
-    anagram = anagram.replace("-", " ")
-    a_split = anagram.split()
-    new_a = []
-    for word in a_split:
-        word = "".join([c.lower() for c in word if c.isalpha()])
-        if word != "":
-            new_a.append(word)
-    for word in new_a:
-        if len(word) == 2 and word not in VALID_TWO_LETTER_WORDS:
-            print(RED + f"Word '{word}' not in valid two-letter words list." + RESET)
-        if word not in words:
-            print(RED + f"Word '{word}' not in dictionary." + RESET)
-            raise Exception
+    
+    # check that dictionaries contain the proper words to be able form given anagram
+    if test_dicts:
+        anagram = anagram.replace("-", " ")
+        a_split = anagram.split()
+        new_a = []
+        for word in a_split:
+            word = "".join([c.lower() for c in word if c.isalpha()])
+            if word != "":
+                new_a.append(word)
+        for word in new_a:
+            if len(word) == 2 and word not in VALID_TWO_LETTER_WORDS:
+                print(RED + f"Word '{word}' not in valid two-letter words list." + RESET)
+            if word not in words:
+                print(RED + f"Word '{word}' not in dictionary." + RESET)
+                raise Exception
 
 # ===============================================
 # --- Graph number of words inside given name ---
@@ -122,23 +131,29 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 
 # test anagrams
+longest_ag_word_lengths = dict()
+names_to_test = ["Michael Lyons"]
 with open("data/raw/anagrams.csv", newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
 
     for i, row in enumerate(reader, 1):
         name = row["input"]
         anagram = row["output"]
-        validate(name, anagram)
+        if name in names_to_test:
+            validate(name, anagram, analytics=True)
 
 # run
-print(YELLOW + "\nWelcome to the Name Anagram Generator!\n" + RESET)
-full_name = input("Enter a name below.\n")
+# print(YELLOW + "\nWelcome to the Name Anagram Generator!\n" + RESET)
+# full_name = input("Enter a name below.\n")
 names = []
-names.append(full_name)
+for name in names_to_test:
+    #print(name)
+    if name in longest_ag_word_lengths.keys():
+        names.append((name, longest_ag_word_lengths[name]))
 print()
 
 # support working multiple names sequentially
-for name in names:
+for name, longest_word in names:
 
     # anagram storage
     all_anagrams = []
@@ -150,10 +165,12 @@ for name in names:
     search_strategy = [(key, len(value)) for key, value in valid_word_dict.items()]
 
     # create visual aid
-    draw_histogram(search_strategy)
+    if not JUST_MEASURING_SEARCH_DURATION:
+        draw_histogram(search_strategy)
 
     # DEBUG
-    search_strategy = [(5, 1)]
+    #search_strategy = [(6, 1)]
+    search_strategy = [(longest_word, 1)]
   
     # find anagrams using initial word lengths of various sizes (name_length, 0.75*name_length, etc.)
     for search_pair in search_strategy[:min(len(search_strategy), 10)]:
@@ -163,8 +180,9 @@ for name in names:
             print(f"Breaking loop because we have at least {RESULT_GROUP_MIN} non-empty groups!")
             print(top_anagrams_dict)
             break
-        sys.stdout.write(f"\rSearching for anagrams with a starting word of length {first_word_length:2d}... ")
-        sys.stdout.flush()
+        if not JUST_MEASURING_SEARCH_DURATION:
+            sys.stdout.write(f"\rSearching for anagrams for {name} with a starting word of length {first_word_length:2d}... ")
+            sys.stdout.flush()
         start = time.perf_counter()
         top_anagrams = generate_top_anagrams(name, model, tokenizer, time_limit=SEARCH_TIME_LIMIT, top_n=10, beam=BEAM_SIZE, limit=200, 
                                              baseline_words=5, first_word_length=first_word_length)
@@ -183,15 +201,17 @@ for name in names:
                 top_anagrams_condensed = [' '.join(c).title() for c in {frozenset(b.split()) for b in (a.lower() for a in top_anagrams)}]
                 #print(f"Top anagrams condensed: {top_anagrams_condensed}")
                 while len(top_anagrams_condensed) > len(unique_phrases_this_round):
-                    print(RED + "NEED TO CONDENSE FURTHER" + RESET)
-                    print(f"\nTop anagrams condensed: {top_anagrams_condensed}, length {len(top_anagrams_condensed)}.")
-                    print(f"Unique phrases this round: {unique_phrases_this_round}, length {len(unique_phrases_this_round)}.")
+                    #print(RED + "NEED TO CONDENSE FURTHER" + RESET)
+                    #print(f"\nTop anagrams condensed: {top_anagrams_condensed}, length {len(top_anagrams_condensed)}.")
+                    #print(f"Unique phrases this round: {unique_phrases_this_round}, length {len(unique_phrases_this_round)}.")
                     top_anagrams_condensed = [' '.join(c).title() for c in {frozenset(b.split()) for b in (a.lower() for a in top_anagrams)}]
-                sys.stdout.write(f"{len(top_anagrams_condensed):3d} found, ")
-                sys.stdout.flush()
+                if not JUST_MEASURING_SEARCH_DURATION:
+                    sys.stdout.write(f"{len(top_anagrams_condensed):3d} found, ")
+                    sys.stdout.flush()
             else:
-                sys.stdout.write(f"{0:3d} found, ")
-                sys.stdout.flush()
+                if not JUST_MEASURING_SEARCH_DURATION:
+                    sys.stdout.write(f"{0:3d} found, ")
+                    sys.stdout.flush()
                 top_anagrams_condensed = []
             top_anagrams_formatted = []
             for i, a in enumerate(top_anagrams_condensed):
@@ -205,14 +225,17 @@ for name in names:
                     best_anagrams.append(a)
             top_anagrams_dict[first_word_length] = top_anagrams_formatted
         else:
-            sys.stdout.write(f"{0:3d} found, ")
-            sys.stdout.flush()
+            if not JUST_MEASURING_SEARCH_DURATION:
+                sys.stdout.write(f"{0:3d} found, ")
+                sys.stdout.flush()
         end = time.perf_counter()
         elapsed = end - start
-        sys.stdout.write(f"took {elapsed:5.2f} seconds.\n")
-        sys.stdout.flush()
-        #sys.stdout.write("\r\033[K")
-
+        if JUST_MEASURING_SEARCH_DURATION:
+            print(f"{elapsed:3.2f}")
+        else:
+            sys.stdout.write(f"took {elapsed:5.2f} seconds.\n")
+            sys.stdout.flush()
+            #sys.stdout.write("\r\033[K")
 
 
     # allows user to reorder anagrams
@@ -291,33 +314,38 @@ for name in names:
 
 
     # re-run model to rank user selected anagrams
-    if best_anagrams:
-        print(f"\nHere's how the computer ranks the best anagrams you selected for: {name}\n")
-        scored_final_anagrams = sorted(finalize_scores(name, best_anagrams, model, tokenizer, batch_size=max(len(best_anagrams), 5), beautify=True), key=lambda x: x[1], reverse=True)
-        for i, aPair in enumerate(scored_final_anagrams, 1):
-            a = aPair[0]
-            aScore = aPair[1]
-            print(f"{i:2d}. {a} (" + str(round(aScore, 2)) + ")")
-        # don't ask user for favorite anagram if only one was selected
-        if len(best_anagrams) == 1:
-            fav_ans = "1"
+    if not JUST_MEASURING_SEARCH_DURATION:
+        if best_anagrams:
+            print(f"\nHere's how the computer ranks the best anagrams you selected for: {name}\n")
+            scored_final_anagrams = sorted(finalize_scores(name, best_anagrams, model, tokenizer, batch_size=max(len(best_anagrams), 5), beautify=True), key=lambda x: x[1], reverse=True)
+            for i, aPair in enumerate(scored_final_anagrams, 1):
+                a = aPair[0]
+                aScore = aPair[1]
+                print(f"{i:2d}. {a} (" + str(round(aScore, 2)) + ")")
+            # don't ask user for favorite anagram if only one was selected
+            if len(best_anagrams) == 1:
+                fav_ans = "1"
+            else:
+                if ASK_USER_FOR_FAVORITE:
+                    deciding_final = True
+                    print("\nBut what's your favorite?\n")
+                    while deciding_final:
+                        fav_ans = input()
+                        try:
+                            fav_id = int(fav_ans)
+                            temp = best_anagrams[fav_id-1]
+                        except:
+                            print(YELLOW + f"\nPlease enter a valid number 1-{len(best_anagrams)}.\n" + RESET)
+                            continue
+                        deciding_final = False
+                else:
+                    print("\nSkipping asking user for favorite anagram...")
+                    fav_ans = 1
+            print(f"\nWinning anagram for: {name}\n" + BOLD + GREEN + scored_final_anagrams[int(fav_ans)-1][0] + "\n" + RESET)
+            print("Hope you enjoyed using the Name Anagram Generator!\n")
         else:
-            deciding_final = True
-            print("\nBut what's your favorite?\n")
-            while deciding_final:
-                fav_ans = input()
-                try:
-                    fav_id = int(fav_ans)
-                    temp = best_anagrams[fav_id-1]
-                except:
-                    print(YELLOW + f"\nPlease enter a valid number 1-{len(best_anagrams)}.\n" + RESET)
-                    continue
-                deciding_final = False
-        print(f"\nWinning anagram for: {name}\n" + BOLD + GREEN + scored_final_anagrams[int(fav_ans)-1][0] + "\n" + RESET)
-        print("Hope you enjoyed using the Name Anagram Generator!\n")
-    else:
-        print(f"\nHmm...looks like there weren't any acceptable anagrams for {name}.\n")
-        print("Make sure you are entering a name with 4 or more letters.\n")
-        print("If you are, try running again with an increased beam size.\n")
-        print("Or, throw in a middle name!\n")
+            print(f"\nHmm...looks like there weren't any acceptable anagrams for {name}.\n")
+            print("Make sure you are entering a name with 4 or more letters.\n")
+            print("If you are, try running again with an increased beam size.\n")
+            print("Or, throw in a middle name!\n")
 
