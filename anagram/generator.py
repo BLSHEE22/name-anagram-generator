@@ -31,13 +31,14 @@ VALID_TWO_LETTER_WORDS = {
     "so", "am", "ew", "mr", "ms", "dr", "sr", "oh", "an", "aa", 
     "ny", "nj", "ma", "nh", "mt", "kc", "cc", "nz", "va", "rv", 
     "sa", "la", "vr", "tv", "ad", "hc", "bj", "hi", "ea", "xl", 
-    "id", "rc", "ed", "ho", "nc", "be", "ab", "ax", "jr"
+    "id", "rc", "ed", "ho", "nc", "be", "ab", "ax", "jr", "qa",
+    "ha", "uh", "um", "im", "ol", "iq", "li", "yo", "mo", "lo"
 }
 
 # Words that need to be all-caps
 ALL_CAPS_WORDS = {"aa", "ny", "nj", "nh", "kc", "cc", "nz", "va", 
                   "rv", "sa", "la", "vr", "tv", "hc", "bj", "ea", 
-                  "xl", "rc", "nc"
+                  "xl", "rc", "nc", "qa", "iq"
 }
 
 def phrase_bonus_score(phrase, baseline_words=5):

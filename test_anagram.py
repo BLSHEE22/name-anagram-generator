@@ -12,8 +12,8 @@ words = load_words()
 # ==============
 # --- Config ---
 # ==============
-BEAM_SIZE = 10
-SEARCH_TIME_LIMIT = 5000
+BEAM_SIZE = 102
+SEARCH_TIME_LIMIT = 11000
 RESULT_GROUP_MIN = 10
 HUMAN_IN_THE_LOOP = False
 
@@ -34,7 +34,7 @@ def validate(name, anagram, debug=False):
     sorted_name = sorted([c.lower() for c in name if c.isalpha()])
 
     ### DATA ANALYTICS
-    a_normal = "".join([a.lower() if a.isalpha() else ' ' for a in anagram])
+    #a_normal = "".join([a.lower() if a.isalpha() else ' ' for a in anagram])
     #print(a_normal)
     #a_split = [a for a in a_normal.split() if a.isalpha()]
     #print(a_split)
@@ -65,13 +65,19 @@ def validate(name, anagram, debug=False):
         print(f"Name letters: {sorted_name}")
         print(f"Anagram letters: {sorted_a}")
         raise Exception
-    anagram_words = [a.lower() for a in anagram.split() if a.isalpha()]
-    for word in anagram_words:
+    anagram = anagram.replace("-", " ")
+    a_split = anagram.split()
+    new_a = []
+    for word in a_split:
+        word = "".join([c.lower() for c in word if c.isalpha()])
+        if word != "":
+            new_a.append(word)
+    for word in new_a:
         if len(word) == 2 and word not in VALID_TWO_LETTER_WORDS:
             print(RED + f"Word '{word}' not in valid two-letter words list." + RESET)
         if word not in words:
             print(RED + f"Word '{word}' not in dictionary." + RESET)
-            #raise Exception
+            raise Exception
 
 # ===============================================
 # --- Graph number of words inside given name ---
@@ -147,7 +153,7 @@ for name in names:
     draw_histogram(search_strategy)
 
     # DEBUG
-    #search_strategy = [(4, 1)]
+    search_strategy = [(5, 1)]
   
     # find anagrams using initial word lengths of various sizes (name_length, 0.75*name_length, etc.)
     for search_pair in search_strategy[:min(len(search_strategy), 10)]:
@@ -181,10 +187,10 @@ for name in names:
                     print(f"\nTop anagrams condensed: {top_anagrams_condensed}, length {len(top_anagrams_condensed)}.")
                     print(f"Unique phrases this round: {unique_phrases_this_round}, length {len(unique_phrases_this_round)}.")
                     top_anagrams_condensed = [' '.join(c).title() for c in {frozenset(b.split()) for b in (a.lower() for a in top_anagrams)}]
-                sys.stdout.write(f"{len(top_anagrams_condensed):2d} found, ")
+                sys.stdout.write(f"{len(top_anagrams_condensed):3d} found, ")
                 sys.stdout.flush()
             else:
-                sys.stdout.write(f"{0:2d} found, ")
+                sys.stdout.write(f"{0:3d} found, ")
                 sys.stdout.flush()
                 top_anagrams_condensed = []
             top_anagrams_formatted = []
@@ -199,7 +205,7 @@ for name in names:
                     best_anagrams.append(a)
             top_anagrams_dict[first_word_length] = top_anagrams_formatted
         else:
-            sys.stdout.write(f"{0:2d} found, ")
+            sys.stdout.write(f"{0:3d} found, ")
             sys.stdout.flush()
         end = time.perf_counter()
         elapsed = end - start
