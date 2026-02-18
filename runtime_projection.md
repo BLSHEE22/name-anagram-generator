@@ -32,7 +32,7 @@ $\large L = 5$
 
 <br>
  
-Now that we have values for C and L, we can form our projection function.
+Now that we have values for C and L, we can form our projection function for N-length initial word search time.
 
 $\large S_n = 0.1C * 2^L$
 
@@ -54,11 +54,13 @@ $\large S_5 = (0.1 * 228) * 2^6 = 1459.2$\
 $\large S_4 = (0.1 * 231) * 2^7 = 2956.8$\
 $\large S_3 = (0.1 * 120) * 2^8 = 3072$\
 $\large S_2 = (0.1 * 17) * 2^9 = 870.4$\
-$\large S_1 = (0.1 * 5) * 2^10 = 512$
+$\large S_1 = (0.1 * 5) * 2^{10} = 512$
 
 
-$\large S = 9,593 \hspace{1mm}seconds \hspace{1mm}\approx \hspace{1mm}2\hspace{1mm} hours\hspace{1mm} and\hspace{1mm} 40 \hspace{1mm}minutes$
-
+$\large S = 9,593$ seconds
+<br>
+$\approx \hspace{1mm}$2 hours and 40 minutes
+<br><br>
 
 
 ## Final Projection Function
@@ -67,8 +69,7 @@ Where $n$ represents the length of the name:
 
 $\Huge S = \sum_{i=0}^{n-1}S_n-i = 0.1C * 2^i$
 
-<br><br>
-
+<br>
 
 Happy projecting!
 
