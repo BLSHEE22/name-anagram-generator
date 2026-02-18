@@ -13,7 +13,7 @@ words = load_words()
 # --- Config ---
 # ==============
 BEAM_SIZE = 102
-SEARCH_TIME_LIMIT = 2000
+SEARCH_TIME_LIMIT = 5000
 RESULT_GROUP_MIN = 10
 HUMAN_IN_THE_LOOP = False
 ASK_USER_FOR_FAVORITE = False
@@ -135,7 +135,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_path)
 # test anagrams
 longest_ag_word_lengths = dict()
 # speed mode only
-names_to_test = ["Nathan Tanner", "Cole Havard"]
+names_to_test = ["John Swanson"]
 with open("data/raw/anagrams.csv", newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
 
