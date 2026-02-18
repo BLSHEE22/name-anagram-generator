@@ -21,23 +21,23 @@ Let's take #1 from above and call it C, for the number of N-length candidate wor
 
 In this case, it's 6-letter words, and there are 96.
 
-$\large C = 96$
+$\Large C = 96$
 
 Now let's take #2 from above and call it L, for the number of remaining letters in the name after N are removed.
 
 There are 11 letters in Claire Tobin, so L is 5.
 
-$\large L = 5$
+$\Large L = 5$
+ 
+## Projection Function:
 
-Projection function (runtime seconds):
-
-$\Large S = 0.1C * 2^L$
+$\Huge S = 0.1C * 2^L$
 
 Substituting in values...
 
-$\large S = (0.1 * 96) * 2^5$\
-$\large S = 9.6 * 32$\
-$\large S = 307.2$
+$\Large S = (0.1 * 96) * 2^5$\
+$\Large S = 9.6 * 32$\
+$\Large S = 307.2$
 
 These times per N can be summed to find the total search duration.
 
