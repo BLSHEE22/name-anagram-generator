@@ -67,7 +67,7 @@ That's 2 hours and 40 minutes!
 
 Where $n$ represents the length of the name:
 
-$\Huge S = \sum_{i=0}^{n-1} S_{n-i} = 0.1C_{n-i} * 2^i$
+$\Huge S = \sum_{i=0}^{n-1} 0.1C_{n-i} * 2^i$
 
 <br>
 
