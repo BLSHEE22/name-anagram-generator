@@ -13,11 +13,11 @@ words = load_words()
 # --- Config ---
 # ==============
 BEAM_SIZE = 102
-SEARCH_TIME_LIMIT = 11000
+SEARCH_TIME_LIMIT = 2000
 RESULT_GROUP_MIN = 10
 HUMAN_IN_THE_LOOP = False
 ASK_USER_FOR_FAVORITE = False
-JUST_MEASURING_SEARCH_DURATION = False
+JUST_MEASURING_SEARCH_DURATION = True
 
 # ===================
 # --- Font Colors ---
@@ -34,6 +34,7 @@ RESET = '\033[0m'
 def validate(name, anagram, debug=False, analytics=False, test_dicts=False):
     sorted_a = sorted([b.lower() for b in anagram if b.isalpha()])
     sorted_name = sorted([c.lower() for c in name if c.isalpha()])
+    #print(Counter(normalize(name)))
 
     ### DATA ANALYTICS
     if analytics:
@@ -49,8 +50,9 @@ def validate(name, anagram, debug=False, analytics=False, test_dicts=False):
         #print(longest_anagram_word_length)
         # quick search to find out how many searches need to be made
         valid_word_dict = filter_valid_words(name, words, Counter(normalize(name)), len(name))
+        #print(valid_word_dict)
         word_ct_dict = {key: len(value) for key, value in valid_word_dict.items()}
-        print(sum(word_ct_dict.values()))
+        #print(sum(word_ct_dict.values()))
         #print(word_ct_dict[longest_anagram_word_length])
         # scrabble = {
         #         'a':1, 'b':3, 'c':3, 'd':2, 'e':1, 'f':4, 'g':2,
@@ -132,15 +134,16 @@ tokenizer = AutoTokenizer.from_pretrained(model_path)
 
 # test anagrams
 longest_ag_word_lengths = dict()
-names_to_test = ["Michael Lyons"]
+# speed mode only
+names_to_test = ["Nathan Tanner", "Cole Havard"]
 with open("data/raw/anagrams.csv", newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
 
     for i, row in enumerate(reader, 1):
         name = row["input"]
-        anagram = row["output"]
+        anagram = row["output"] 
         if name in names_to_test:
-            validate(name, anagram, analytics=True)
+            validate(name, anagram, analytics=True, test_dicts=True)
 
 # run
 # print(YELLOW + "\nWelcome to the Name Anagram Generator!\n" + RESET)
@@ -168,7 +171,7 @@ for name, longest_word in names:
     if not JUST_MEASURING_SEARCH_DURATION:
         draw_histogram(search_strategy)
 
-    # DEBUG
+    # speed mode only
     #search_strategy = [(6, 1)]
     search_strategy = [(longest_word, 1)]
   
@@ -183,6 +186,7 @@ for name, longest_word in names:
         if not JUST_MEASURING_SEARCH_DURATION:
             sys.stdout.write(f"\rSearching for anagrams for {name} with a starting word of length {first_word_length:2d}... ")
             sys.stdout.flush()
+        # start timer
         start = time.perf_counter()
         top_anagrams = generate_top_anagrams(name, model, tokenizer, time_limit=SEARCH_TIME_LIMIT, top_n=10, beam=BEAM_SIZE, limit=200, 
                                              baseline_words=5, first_word_length=first_word_length)
@@ -228,6 +232,7 @@ for name, longest_word in names:
             if not JUST_MEASURING_SEARCH_DURATION:
                 sys.stdout.write(f"{0:3d} found, ")
                 sys.stdout.flush()
+        # end timer
         end = time.perf_counter()
         elapsed = end - start
         if JUST_MEASURING_SEARCH_DURATION:
