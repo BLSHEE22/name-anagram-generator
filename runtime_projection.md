@@ -16,13 +16,13 @@ name = "Claire Tobin"
 N = 6
 ```
 
-Let's use C to represent the number of N-length candidate words.
-
-> A "candidate word" is a word that can be made using the letters of the name.
+Let's use C to represent the number of N-length candidate words in the name.
 
 In this case, it's 6-letter words, and there are 179.
 
 $\large C = 179$
+
+<br>
 
 Now let's use L to represent the number of remaining letters in the name after N are removed.
 
@@ -30,6 +30,7 @@ There are 11 letters in Claire Tobin, so L is 5.
 
 $\large L = 5$
 
+<br>
  
 Now that we have values for C and L, we can form our projection function.
 
@@ -56,7 +57,7 @@ $\large S_2 = (0.1 * 17) * 2^9 = 870.4$\
 $\large S_1 = (0.1 * 5) * 2^10 = 512$
 
 
-$\large S = 9,593   \approx$ 2 hours and 40 minutes
+$\large S = 9,593 seconds  \approx 2 hours and 40 minutes$
 
 
 
