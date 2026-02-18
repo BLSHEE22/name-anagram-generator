@@ -29,6 +29,8 @@ There are 11 letters in Claire Tobin, so L is 5.
 $\large L = 5$
 
 <br>
+
+## Projection Function
  
 Now that we have values for C and L, we can form our projection function for search duration at a specific word length.
 
@@ -40,7 +42,7 @@ $\large S_6 = (0.1 * 179) * 2^5$\
 $\large S_6 = 17.9 * 32$\
 $\large S_6 = 572.8$
 
-This process can be repeated at all available word lengths to find the total search duration.
+This process can be repeated at all available word lengths to find the total search duration in seconds.
 
 $\large S_{11} = (0.1 * 0) * 2^0 = 0$\
 $\large S_{10} = (0.1 * 1) * 2^1 = 0.2$\
@@ -55,8 +57,8 @@ $\large S_2 = (0.1 * 17) * 2^9 = 870.4$\
 $\large S_1 = (0.1 * 5) * 2^{10} = 512$
 
 
-$\large S = 9,593$ seconds
-<br>
+$\large S = 9,593$
+<br><br>
 That's 2 hours and 40 minutes!
 <br><br>
 
@@ -65,7 +67,7 @@ That's 2 hours and 40 minutes!
 
 Where $n$ represents the length of the name:
 
-$\Huge S = \sum_{i=0}^{n-1} S_{n-i} = 0.1C * 2^i$
+$\Huge S = \sum_{i=0}^{n-1} S_{n-i} = 0.1C_{n-i} * 2^i$
 
 <br>
 
