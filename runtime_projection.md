@@ -57,17 +57,17 @@ $\large S_2 = (0.1 * 17) * 2^9 = 870.4$\
 $\large S_1 = (0.1 * 5) * 2^10 = 512$
 
 
-$\large S = 9,593 seconds  \approx 2 hours and 40 minutes$
+$\large S = 9,593 \hspace{1mm}seconds \hspace{1mm}\approx \hspace{1mm}2\hspace{1mm} hours\hspace{1mm} and\hspace{1mm} 40 \hspace{1mm}minutes$
 
 
 
-### Final Projection Function
+## Final Projection Function
 
 Where $n$ represents the length of the name:
 
-$\Huge S = \sum_{i=0}^{n-1}S_n-i = 0.1C * 2^i$\
+$\Huge S = \sum_{i=0}^{n-1}S_n-i = 0.1C * 2^i$
 
-
+<br><br>
 
 
 Happy projecting!
