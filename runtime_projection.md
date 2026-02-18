@@ -2,7 +2,8 @@
 
 Goal: Predict how long it will take to find ALL anagrams for a given name.
 
-Approach: Predict search times at each available starting word length N and sum times.
+## Approach
+Predict search times at each available starting word length N and sum times.
 
 At a single N, the deciding factors for run time are:
 1. Number of N-length words in name
@@ -21,17 +22,17 @@ Let's take #1 from above and call it C, for the number of N-length candidate wor
 
 In this case, it's 6-letter words, and there are 96.
 
-$\Large C = 96$
+$\large C = 96$
 
 Now let's take #2 from above and call it L, for the number of remaining letters in the name after N are removed.
 
 There are 11 letters in Claire Tobin, so L is 5.
 
-$\Large L = 5$
+$\large L = 5$
  
-## Projection Function:
+### Projection Function
 
-$\Huge S = 0.1C * 2^L$
+$\HUGE S = 0.1C * 2^L$
 
 Substituting in values...
 
