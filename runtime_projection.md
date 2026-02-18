@@ -32,13 +32,13 @@ $\large L = 5$
  
 ### Projection Function
 
-$\HUGE S = 0.1C * 2^L$
+$\Huge S_n = 0.1C * 2^L$
 
 Substituting in values...
 
-$\Large S = (0.1 * 96) * 2^5$\
-$\Large S = 9.6 * 32$\
-$\Large S = 307.2$
+$\Large S_6 = (0.1 * 96) * 2^5$\
+$\Large S_6 = 9.6 * 32$\
+$\Large S_6 = 307.2$
 
 These times per N can be summed to find the total search duration.
 
