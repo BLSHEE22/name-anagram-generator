@@ -1,9 +1,9 @@
 # Projecting Anagram Search Time
 
-Goal: Predict how long it will take to find all anagrams for a given name.
+Goal: Project how long it would take to find all anagrams for a given name.
 
 ## Approach
-Predict search times at each available starting word length N and sum the times.
+Project search times at each available starting word length N and sum the times.
 
 At a single N, the deciding factors for run time are:
 1. Number of N-length words in name
@@ -16,7 +16,7 @@ name = "Claire Tobin"
 N = 6
 ```
 
-Let's use $C_n$ to represent the number of N-length candidate words in the name.
+Let's use $\large C_n$ to represent the number of N-length candidate words in the name.
 
 In this case, it's 6-letter words, and there are 179.
 
@@ -32,7 +32,7 @@ $\large L = 5$
 
 ## Projection Function
  
-Now that we have values for C and L, we can use our projection function to determine $S_n$, the number of seconds needed to search for all name anagrams with an initial N-letter word.
+Now that we have values for C and L, we can use our projection function to determine $\large S_n$, the number of seconds needed to search for all anagrams of the name with an initial N-letter word.
 
 $\large S_n = 0.1C_n * 2^L$
 
@@ -42,7 +42,7 @@ $\large S_6 = (0.1 * 179) * 2^5$\
 $\large S_6 = 17.9 * 32$\
 $\large S_6 = 572.8$
 
-This process can be repeated for all valid N to find the total search duration in seconds.
+This process can be repeated for all valid N to find the total search duration.
 
 $\large S_{11} = (0.1 * 0) * 2^0 = 0$\
 $\large S_{10} = (0.1 * 1) * 2^1 = 0.2$\
