@@ -16,11 +16,11 @@ name = "Claire Tobin"
 N = 6
 ```
 
-Let's use C to represent the number of N-length candidate words in the name.
+Let's use $C_n$ to represent the number of N-length candidate words in the name.
 
 In this case, it's 6-letter words, and there are 179.
 
-$\large C = 179$
+$\large C_6 = 179$
 
 Now let's use L to represent the number of remaining letters in the name after N are removed.
 
@@ -32,17 +32,17 @@ $\large L = 5$
 
 ## Projection Function
  
-Now that we have values for C and L, we can form our projection function for search duration at a specific word length.
+Now that we have values for C and L, we can use our projection function to determine $S_n$, the number of seconds needed to search for all name anagrams with an initial N-letter word.
 
-$\large S_n = 0.1C * 2^L$
+$\large S_n = 0.1C_n * 2^L$
 
-After plugging in values, we find that an anagram search based on an initial 6-letter word would take 572.8 seconds.
+After plugging in values, we find that searching for all anagrams of Claire Tobin with a 6-letter initial word would take 572.8 seconds.
 
 $\large S_6 = (0.1 * 179) * 2^5$\
 $\large S_6 = 17.9 * 32$\
 $\large S_6 = 572.8$
 
-This process can be repeated at all available word lengths to find the total search duration in seconds.
+This process can be repeated for all valid N to find the total search duration in seconds.
 
 $\large S_{11} = (0.1 * 0) * 2^0 = 0$\
 $\large S_{10} = (0.1 * 1) * 2^1 = 0.2$\
