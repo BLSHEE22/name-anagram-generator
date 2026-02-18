@@ -31,7 +31,7 @@ $\large L = 5$
 
 Projection function (runtime seconds):
 
-$\large S = $0.1C * 2^L$
+$\Large S = 0.1C * 2^L$
 
 Substituting in values...
 
