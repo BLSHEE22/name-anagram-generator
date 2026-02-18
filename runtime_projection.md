@@ -27,12 +27,11 @@ Now let's take #2 from above and call it L, for the number of remaining letters 
 
 There are 11 letters in Claire Tobin, so L is 5.
 
-$\large L = 11 - 6$\
 $\large L = 5$
 
 Projection function (runtime seconds):
 
-$\Huge S = $0.1C * 2^L$
+$\large S = $0.1C * 2^L$
 
 Substituting in values...
 
