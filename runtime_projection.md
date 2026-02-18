@@ -32,7 +32,7 @@ $L = 5$
 
 Projection function (runtime seconds):
 
-${\LARGE S = $0.1C * 2^L}$
+\LARGE$LARGE S = $0.1C * 2^L$
 
 Substituting in values...
 $S = (0.1 * 96) * 2^5$\
