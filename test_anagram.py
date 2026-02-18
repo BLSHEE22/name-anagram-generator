@@ -135,7 +135,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_path)
 # test anagrams
 longest_ag_word_lengths = dict()
 # speed mode only
-names_to_test = ["John Swanson"]
+names_to_test = ["Claire Tobin"]
 with open("data/raw/anagrams.csv", newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
 

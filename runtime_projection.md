@@ -1,30 +1,58 @@
 # Projecting Anagram Search Time
 
-Question: How long does it take to find ALL anagrams for a given name?
+Goal: Predict how long it will take to find ALL anagrams for a given name.
 
-Hypothesis: It comes down to **2 key factors**.
+Approach: Predict search times at each available starting word length $N$ and sum times.
 
-1. Number of candidate words at the max-length anagram word.
-2. Number of letters remaining from the name after max-length anagram word is removed.
+At a single N, the deciding factors for run time are:
+1. Number of N-length words in name
+2. Number of letters remaining from the name after N are removed
 
+Example:
 
-Here's how we'll set up our projection function:
+```
+name = "Claire Tobin"
+T = len([n for n in name if n.isalpa()])
+N = 6
+```
 
-$L = Length of name$
-
-$N = Max anagram word length$
-
-$C = Number of candidate words at length N$
+Let's take #1 from above and call it $C$, for the number of N-length candidate words.
 
 - A "candidate word" is a word that can be made using the letters of the name.
 
-$l = Number of letters remaining from name after max anagram word length is removed$
+In this case, it's 6-letter words, and there are 96.
 
-$l = L - N$
+$
+C = 96
+$
 
-Function
-$0.1C * 2^l$ 
+Now let's take #2 from above and call it $L$, for the number of remaining letters in the name after N are removed.
+
+There are 11 letters in Claire Tobin, so L is 5.
+
+$
+L = T - N
+L = 11 - 6
+L = 5
+$
+
+Projection function (runtime seconds):
+
+$
+S = $0.1C * 2^L
+$
+
+Substituting in values...
+$
+S = (0.1 * 96) * 2^5
+S = 9.6 * 32
+S = 307.2
+$
+
+These times per N can be summed to find the total search duration.
 
 
-Examples:
+
+
+More Examples:
 
