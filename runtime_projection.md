@@ -18,7 +18,7 @@ N = 6
 
 Let's use C to represent the number of N-length candidate words.
 
-- A "candidate word" is a word that can be made using the letters of the name.
+> A "candidate word" is a word that can be made using the letters of the name.
 
 In this case, it's 6-letter words, and there are 179.
 
@@ -41,7 +41,7 @@ $\large S_6 = (0.1 * 179) * 2^5$\
 $\large S_6 = 17.9 * 32$\
 $\large S_6 = 572.8$
 
-These times per N can be summed to find the total search duration.
+This process can be repeated at each initial word length to find the total search duration.
 
 $\large S_{11} = (0.1 * 0) * 2^0 = 0$\
 $\large S_{10} = (0.1 * 1) * 2^1 = 0.2$\
@@ -56,7 +56,7 @@ $\large S_2 = (0.1 * 17) * 2^9 = 870.4$\
 $\large S_1 = (0.1 * 5) * 2^10 = 512$
 
 
-$\large S = 9,593 $
+$\large S = 9,593   \approx$ 2 hours and 40 minutes
 
 
 
