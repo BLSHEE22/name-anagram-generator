@@ -78,10 +78,15 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 
 # validate db
+db_path = "data/raw/anagrams.csv"
+df = pd.read_csv(db_path)
+df.drop_duplicates(subset=['input'], keep='first', inplace=True)
+df.to_csv(db_path, index=False)
+
 names_to_test = []
 longest_wa_word_lengths = dict()
 word_ct_dict = dict()
-with open("data/raw/anagrams.csv", newline="", encoding="utf-8") as f:
+with open(db_path, newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
 
     for i, row in enumerate(reader, 1):
@@ -276,6 +281,7 @@ for name, longest_word in names:
             # don't ask user for favorite anagram if only one was selected
             if len(best_anagrams) == 1:
                 fav_ans = "1"
+                runner_up_ans = []
             else:
                 if ASK_USER_FOR_FAVORITE:
                     deciding_final = True
@@ -301,38 +307,44 @@ for name, longest_word in names:
                             else:
                                 runner_up_ans = [int(runner_up_ans)]
                         except:
-                            print(YELLOW + f"\nPlease enter a valid number 1-{len(best_anagrams)}.\n" + RESET)
+                            print(YELLOW + f"\nPlease enter valid numbers 1-{len(best_anagrams)} separated by commas.\n" + RESET)
                             continue
                         deciding_runner_ups = False
-                    # format block for excel paste
-                    winning_anagram = scored_final_anagrams[fav_id-1][0]
-                    validate(winning_anagram, name, analytics=True)
-                    paste_list = [winning_anagram]
-                    print("Copying winning/runner-up anagrams and other data to clipboard...\n")
-                    print(scored_final_anagrams[fav_id-1][0] + "\t", end="")
-                    for i in runner_up_ans:
-                        paste_list.append(scored_final_anagrams[i-1][0])
-                    # buffer list if less than 8 total anagrams are approved
-                    while len(paste_list) < 8:
-                        paste_list.append(" ")
-                    # add beam size
-                    paste_list.append(BEAM_SIZE)
-                    # add duration
-                    longest_wa_word_length = longest_wa_word_lengths[winning_anagram]
-                    paste_list.append(search_durations_dict[longest_wa_word_length])
-                    # add total candidate words
-                    paste_list.append(sum(word_ct_dict.values()))
-                    # add longest W.A. word length
-                    paste_list.append(longest_wa_word_length)
-                    # add number of candidate words at longest W.A. word length
-                    paste_list.append(word_ct_dict[longest_wa_word_length])
-                    df = pd.DataFrame([paste_list])
-                    df.to_clipboard(index=False, header=False)
-                    print()
                 else:
                     print("\nSkipping asking user for favorite anagram...")
                     fav_ans = 1
+            # format block for excel paste
+            winning_anagram = scored_final_anagrams[int(fav_ans)-1][0]
+            validate(winning_anagram, name, analytics=True)
+            paste_list = [winning_anagram]
+            print("\nCopying winning/runner-up anagrams and other data to clipboard... ", end="")
+            for i in runner_up_ans:
+                paste_list.append(scored_final_anagrams[i-1][0])
+            # buffer list if less than 8 total anagrams are approved
+            while len(paste_list) < 8:
+                paste_list.append(" ")
+            # add beam size
+            paste_list.append(BEAM_SIZE)
+            # add duration
+            longest_wa_word_length = longest_wa_word_lengths[winning_anagram]
+            paste_list.append(search_durations_dict[longest_wa_word_length])
+            # add total candidate words
+            paste_list.append(sum(word_ct_dict.values()))
+            # add longest W.A. word length
+            paste_list.append(longest_wa_word_length)
+            # add number of candidate words at longest W.A. word length
+            paste_list.append(word_ct_dict[longest_wa_word_length])
+            df = pd.DataFrame([paste_list])
+            df.to_clipboard(index=False, header=False)
+            print("done!")
+            # print conclusion msg
             print(f"\nWinning anagram for: {name}\n" + BOLD + GREEN + scored_final_anagrams[int(fav_ans)-1][0] + "\n" + RESET)
+            # add winning anagram to db
+            print("Adding new name/anagram pair to database... ", end="")
+            with open(db_path, mode='a', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow([name, winning_anagram])
+            print("done!\n")
             print("Hope you enjoyed using the Name Anagram Generator!\n")
         else:
             print(f"\nHmm...looks like there weren't any acceptable anagrams for {name}.\n")
