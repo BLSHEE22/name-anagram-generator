@@ -53,7 +53,7 @@ MIN_NON_EMPTY_GROUPS = 5
 # allow for user editing/reordering of found anagrams
 HUMAN_IN_THE_LOOP = True
 
-# allow for use to decide favorite among found anagrams
+# allow for user to decide favorite among found anagrams
 ASK_USER_FOR_FAVORITE = True
 
 # when enabled, skips all prints except for search duration (s)
