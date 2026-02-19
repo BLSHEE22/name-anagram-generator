@@ -2,7 +2,7 @@
 
 ### Create anagrams out of your friends' names!
 
-![See 'runtime_projections.png' for more info.](ac_gif.gif)
+![See 'runtime_projections.png' for more info.](ac.gif)
 
 ## Setup
 
