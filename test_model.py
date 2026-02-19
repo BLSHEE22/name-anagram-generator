@@ -27,11 +27,6 @@ def generate_anagram(name, max_new_tokens=32):
 
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-# Quick manual tests
-print(generate_anagram("Make An Anagram Out of Me"))
-print(generate_anagram("Dont Do The Same Thing Twice"))
-print()
-
 # Interactive loop
 while True:
     name = input("\nEnter a name (or 'q' to quit): ")

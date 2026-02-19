@@ -3,10 +3,10 @@
 Goal: Project how long it would take to find all anagrams for a given name.
 
 ## Approach
-Project search times at each available starting word length N and sum the times.
+Project search time for all anagrams with initial word length N, and sum the times for all N.
 
-At a single N, the deciding factors for run time are:
-1. Number of N-length words in name
+Factors which increase run time:
+1. Number of N-letter words in name
 2. Number of letters remaining from the name after N are removed
 
 Example:
@@ -16,7 +16,7 @@ name = "Claire Tobin"
 N = 6
 ```
 
-Let's use $\large C_n$ to represent the number of N-length candidate words in the name.
+Let's use $\large C_n$ to represent the number of N-letter candidate words in the name.
 
 In this case, it's 6-letter words, and there are 179.
 
@@ -42,7 +42,7 @@ $\large S_6 = (0.1 * 179) * 2^5$\
 $\large S_6 = 17.9 * 32$\
 $\large S_6 = 572.8$
 
-This process can be repeated for all valid N to find the total search duration.
+Repeating this process for all valid N and taking the sum gives us the total search duration.
 
 $\large S_{11} = (0.1 * 0) * 2^0 = 0$\
 $\large S_{10} = (0.1 * 1) * 2^1 = 0.2$\

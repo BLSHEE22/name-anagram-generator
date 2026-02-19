@@ -6,13 +6,9 @@ import torch
 import random
 import itertools
 from readchar import readkey
+from config import *
+from constants import *
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-
-RED = '\033[31m'
-GREEN = '\033[32m'
-YELLOW = '\033[33m'
-BOLD = '\033[1m'
-RESET = '\033[0m'
 
 # ===========================
 # --- Word lists / scoring ---
@@ -269,6 +265,10 @@ def generate_anagrams_guided(name, start_time, words=None, max_words=6, limit=20
         # stop searches that take longer than the time limit
         if exceeded_time_limit(start_time, time_limit):
             stop_requested = True
+            break
+
+        # stop searches that only desire MIN_ANAGRAMS anagrams
+        if STOP_GROUP_AFTER_MIN_FOUND and len(results) >= MIN_ANAGRAMS:
             break
 
     return results
