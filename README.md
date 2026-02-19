@@ -9,6 +9,7 @@
 ### Download requirements.
 
 ```pip3 install torch transformers datasets sentencepiece accelerate```
+<br>
 
 ### Add training data into data/raw if it does not already exist.
 
@@ -20,12 +21,16 @@ Eric Musselman,Menu's Miracles
 ...
 etc.
 ```
+<br>
 
 ### Train the model.
 
 ```python3 -m training.train```
+<br>
 
-### Set up config.
+### Specify parameters.
+
+- config.py
 
 ```
 # max number of words placed onto the stack in each pass 
@@ -52,6 +57,7 @@ ASK_USER_FOR_FAVORITE = True
 # when enabled, skips all prints except for search duration (s)
 JUST_MEASURING_SEARCH_DURATION = False
 ```
+<br>
 
 ### Run.
 
