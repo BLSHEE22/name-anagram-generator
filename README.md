@@ -9,6 +9,7 @@
 ### Download requirements.
 
 ```pip3 install torch transformers datasets sentencepiece accelerate```
+
 <br>
 
 ### Add training data into data/raw if it does not already exist.
@@ -26,6 +27,7 @@ etc.
 ### Train the model.
 
 ```python3 -m training.train```
+
 <br>
 
 ### Specify parameters.
