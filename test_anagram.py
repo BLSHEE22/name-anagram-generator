@@ -20,6 +20,7 @@ def validate(name, anagram, debug=False, analytics=False, test_dicts=False):
 
     ### DATA ANALYTICS
     if analytics:
+        global word_ct_dict
         a_normal = "".join([a.lower() if a.isalpha() else ' ' for a in anagram])
         a_split = [a for a in a_normal.split() if a.isalpha()]
         longest_anagram_word_length = max([len(a) for a in a_split])
@@ -27,9 +28,8 @@ def validate(name, anagram, debug=False, analytics=False, test_dicts=False):
         #print(f"Longest word length in anagram: {longest_anagram_word_length}")
         #print(longest_anagram_word_length)
         # quick search to find out how many searches need to be made
-        #valid_word_dict = filter_valid_words(name, words, Counter(normalize(name)), len(name))
-        #print(valid_word_dict)
-        #word_ct_dict = {key: len(value) for key, value in valid_word_dict.items()}
+        valid_word_dict = filter_valid_words(name, words, Counter(normalize(name)), len(name))
+        word_ct_dict = {key: len(value) for key, value in valid_word_dict.items()}
         #print(sum(word_ct_dict.values()))
         #print(word_ct_dict[longest_anagram_word_length])
         # scrabble = {
@@ -80,6 +80,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_path)
 # validate db
 names_to_test = []
 longest_wa_word_lengths = dict()
+word_ct_dict = dict()
 with open("data/raw/anagrams.csv", newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
 
@@ -111,6 +112,7 @@ for name, longest_word in names:
     # quick search to find out how many searches need to be made
     valid_word_dict = filter_valid_words(name, words, Counter(normalize(name)), len(name))
     search_strategy = [(key, len(value)) for key, value in valid_word_dict.items()]
+    search_durations_dict = dict()
 
     # create visual aid unless in data mode
     if not JUST_MEASURING_SEARCH_DURATION:
@@ -180,6 +182,7 @@ for name, longest_word in names:
         if JUST_MEASURING_SEARCH_DURATION:
             print(f"{elapsed:3.2f}")
         else:
+            search_durations_dict[first_word_length] = round(elapsed, 2)
             sys.stdout.write(f"took {elapsed:5.2f} seconds.\n")
             sys.stdout.flush()
             #sys.stdout.write("\r\033[K")
@@ -300,13 +303,29 @@ for name, longest_word in names:
                         except:
                             print(YELLOW + f"\nPlease enter a valid number 1-{len(best_anagrams)}.\n" + RESET)
                             continue
-
                         deciding_runner_ups = False
-                    paste_list = [scored_final_anagrams[fav_id-1][0]]
-                    print("Copying anagrams to clipboard...\n")
+                    # format block for excel paste
+                    winning_anagram = scored_final_anagrams[fav_id-1][0]
+                    validate(winning_anagram, name, analytics=True)
+                    paste_list = [winning_anagram]
+                    print("Copying winning/runner-up anagrams and other data to clipboard...\n")
                     print(scored_final_anagrams[fav_id-1][0] + "\t", end="")
                     for i in runner_up_ans:
                         paste_list.append(scored_final_anagrams[i-1][0])
+                    # buffer list if less than 8 total anagrams are approved
+                    while len(paste_list) < 8:
+                        paste_list.append(" ")
+                    # add beam size
+                    paste_list.append(BEAM_SIZE)
+                    # add duration
+                    longest_wa_word_length = longest_wa_word_lengths[winning_anagram]
+                    paste_list.append(search_durations_dict[longest_wa_word_length])
+                    # add total candidate words
+                    paste_list.append(sum(word_ct_dict.values()))
+                    # add longest W.A. word length
+                    paste_list.append(longest_wa_word_length)
+                    # add number of candidate words at longest W.A. word length
+                    paste_list.append(word_ct_dict[longest_wa_word_length])
                     df = pd.DataFrame([paste_list])
                     df.to_clipboard(index=False, header=False)
                     print()

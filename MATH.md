@@ -9,6 +9,8 @@ Factors which increase run time:
 1. Number of N-letter words in name
 2. Number of letters remaining from the name after N are removed
 
+![See 'runtime_projections.png' for more info.](runtime_projections.png)
+
 Example:
 
 ```
