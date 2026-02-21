@@ -1,5 +1,6 @@
 import csv
 from utils import *
+from config import *
 from constants import *
 import datetime
 from collections import Counter
@@ -43,7 +44,7 @@ def project_search_durations(name):
 # find projections for each name in db
 def calc_db_exhaust_durations():
     search_durations = []
-    with open("data/raw/anagrams.csv", newline="", encoding="utf-8") as f:
+    with open(DB_PATH, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
 
         for row in reader:

@@ -78,15 +78,14 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 
 # validate db
-db_path = "data/raw/anagrams.csv"
-df = pd.read_csv(db_path)
+df = pd.read_csv(DB_PATH)
 df.drop_duplicates(subset=['input'], keep='first', inplace=True)
-df.to_csv(db_path, index=False)
+df.to_csv(DB_PATH, index=False)
 
 names_to_test = []
 longest_wa_word_lengths = dict()
 word_ct_dict = dict()
-with open(db_path, newline="", encoding="utf-8") as f:
+with open(DB_PATH, newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
 
     for i, row in enumerate(reader, 1):
@@ -341,7 +340,7 @@ for name, longest_word in names:
             print(f"\nWinning anagram for: {name}\n" + BOLD + GREEN + scored_final_anagrams[int(fav_ans)-1][0] + "\n" + RESET)
             # add winning anagram to db
             print("Adding new name/anagram pair to database... ", end="")
-            with open(db_path, mode='a', newline='') as file:
+            with open(DB_PATH, mode='a', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow([name, winning_anagram])
             print("done!\n")

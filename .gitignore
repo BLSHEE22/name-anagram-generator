@@ -4,3 +4,4 @@ anagram_model/
 *.pt
 *.bin
 *.ckpt
+anagrams.csv

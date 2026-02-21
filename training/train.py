@@ -2,11 +2,12 @@ from transformers import Trainer, TrainingArguments
 from model.model import load_model
 from model.tokenizer import load_tokenizer
 from training.dataset import load_anagram_dataset
+from config import *
 
 tokenizer = load_tokenizer()
 model = load_model()
 
-dataset = load_anagram_dataset("data/raw/anagrams.csv")
+dataset = load_anagram_dataset(DB_PATH)
 
 def tokenize(example):
     inputs = tokenizer(example["input"], padding="max_length", truncation=True)
