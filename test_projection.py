@@ -66,6 +66,6 @@ def project_exhaust_duration():
     
 
 #calc_db_exhaust_durations()
-project_exhaust_duration()
+#project_exhaust_duration()
 
 

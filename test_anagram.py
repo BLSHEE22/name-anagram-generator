@@ -1,6 +1,7 @@
 from collections import Counter
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-from anagram.generator import generate_top_anagrams, finalize_scores, filter_valid_words, load_words, normalize, VALID_TWO_LETTER_WORDS
+from anagram.generator import generate_top_anagrams, finalize_scores, filter_valid_words, load_words, normalize, VALID_TWO_LETTER_WORDS, ALL_CAPS_WORDS
+from test_projection import project_search_durations
 from readchar import readkey, key
 import sys
 import csv
@@ -150,13 +151,16 @@ for name, longest_word in names:
         if all("[" not in a for a in top_anagrams):
             if top_anagrams:
                 top_angrams_condensed = top_anagrams.copy()
-                top_anagrams_condensed = [' '.join(c).title() for c in {frozenset(b.split()) for b in (a.lower() for a in top_anagrams)}]
+                # all-caps acronyms/abbreviations, title all other words
+                top_anagrams_condensed = [frozenset(w.upper() if w in ALL_CAPS_WORDS else w.title() for w in c) for c in {frozenset(b.split()) for b in (a.lower() for a in top_anagrams)}]
+                top_anagrams_condensed = [' '.join(p) for p in top_anagrams_condensed]
                 #print(f"Top anagrams condensed: {top_anagrams_condensed}")
                 while len(top_anagrams_condensed) > len(unique_phrases_this_round):
                     #print(RED + "NEED TO CONDENSE FURTHER" + RESET)
                     #print(f"\nTop anagrams condensed: {top_anagrams_condensed}, length {len(top_anagrams_condensed)}.")
                     #print(f"Unique phrases this round: {unique_phrases_this_round}, length {len(unique_phrases_this_round)}.")
-                    top_anagrams_condensed = [' '.join(c).title() for c in {frozenset(b.split()) for b in (a.lower() for a in top_anagrams)}]
+                    top_anagrams_condensed = [frozenset(w.upper() if w in ALL_CAPS_WORDS else w.title() for w in c) for c in {frozenset(b.split()) for b in (a.lower() for a in top_anagrams)}]
+                    top_anagrams_condensed = [' '.join(p) for p in top_anagrams_condensed]
                 if not JUST_MEASURING_SEARCH_DURATION:
                     sys.stdout.write(f"{len(top_anagrams_condensed):3d} found, ")
                     sys.stdout.flush()
@@ -333,6 +337,11 @@ for name, longest_word in names:
             paste_list.append(longest_wa_word_length)
             # add number of candidate words at longest W.A. word length
             paste_list.append(word_ct_dict[longest_wa_word_length])
+            # add exhaustive anagram search duration
+            search_durations = project_search_durations(name)
+            total_search_duration = round(sum([p[1] for p in search_durations]), 0)
+            paste_list.append(total_search_duration)
+            # copy data to clipboard
             df = pd.DataFrame([paste_list])
             df.to_clipboard(index=False, header=False)
             print("done!")

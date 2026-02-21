@@ -34,7 +34,7 @@ VALID_TWO_LETTER_WORDS = {
 # Words that need to be all-caps
 ALL_CAPS_WORDS = {"aa", "ny", "nj", "nh", "kc", "cc", "nz", "va", 
                   "rv", "sa", "la", "vr", "tv", "hc", "bj", "ea", 
-                  "xl", "rc", "nc", "qa", "iq"
+                  "xl", "rc", "nc", "qa", "iq", "nhl"
 }
 
 def phrase_bonus_score(phrase, baseline_words=5):
