@@ -329,7 +329,7 @@ for name, longest_word in names:
             # add beam size
             paste_list.append(BEAM_SIZE)
             # add duration
-            longest_wa_word_length = longest_wa_word_lengths[winning_anagram]
+            longest_wa_word_length = max([len(w) for w in winning_anagram.split()])
             paste_list.append(search_durations_dict[longest_wa_word_length])
             # add total candidate words
             paste_list.append(sum(word_ct_dict.values()))

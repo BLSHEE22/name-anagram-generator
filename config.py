@@ -12,11 +12,11 @@ DB_PATH = "data/raw/anagrams.csv"
 
 
 # max number of words placed onto the stack in each pass 
-BEAM_SIZE = 6
+BEAM_SIZE = 12
 
 
 # duration (s) at which to stop searching and return results
-SEARCH_TIME_LIMIT = 20
+SEARCH_TIME_LIMIT = 120
 
 
 # number of found anagrams at which to stop searching in current group
@@ -32,7 +32,7 @@ MIN_NON_EMPTY_GROUPS = 5
 
 
 # allow for user editing/reordering of found anagrams
-HUMAN_IN_THE_LOOP = True
+HUMAN_IN_THE_LOOP = False
 
 
 # allow for user to decide favorite among found anagrams

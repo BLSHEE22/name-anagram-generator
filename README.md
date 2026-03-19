@@ -6,9 +6,14 @@
 
 ## Setup
 
+### Create a virtual environment and activate it.
+
+```python3 -m venv ./venv```
+```source ./venv/bin/activate```
+
 ### Download requirements.
 
-```pip3 install torch transformers datasets sentencepiece accelerate```
+```python3 -m pip install torch transformers datasets sentencepiece accelerate readchar tiktoken protobuf```
 
 <br>
 
@@ -46,7 +51,7 @@ MAX_LENGTH = 32
 DB_PATH = "data/raw/anagrams.csv"
 
 
-# max number of words placed onto the stack in each pass 
+# search width, i.e. max number of words to consider at a time
 BEAM_SIZE = 6
 
 

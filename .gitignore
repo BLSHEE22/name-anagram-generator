@@ -5,3 +5,5 @@ anagram_model/
 *.bin
 *.ckpt
 data/raw/anagrams.csv
+*.pyc
+.venv
