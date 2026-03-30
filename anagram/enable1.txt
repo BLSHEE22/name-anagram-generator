@@ -51412,6 +51412,8 @@ evadible
 evading
 evagination
 evaginations
+eval
+evals
 evaluate
 evaluated
 evaluates
