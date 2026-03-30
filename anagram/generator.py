@@ -29,7 +29,7 @@ VALID_TWO_LETTER_WORDS = {
     "sa", "la", "vr", "tv", "ad", "hc", "bj", "hi", "ea", "xl", 
     "id", "rc", "ed", "ho", "nc", "be", "ab", "ax", "jr", "qa",
     "ha", "uh", "um", "im", "ol", "iq", "li", "yo", "mo", "lo",
-    "rl"
+    "rl", "er"
 }
 
 # Words that need to be all-caps
